@@ -1,35 +1,32 @@
 #include "raylib.h"
+#include "perlin.h"
 
 #define SCREEN_WIDTH (800)
 #define SCREEN_HEIGHT (450)
 
 #define WINDOW_TITLE "Window title"
 
-int main(void)
-{
-    InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
-    SetTargetFPS(60);
-    Image perlin = GenImagePerlinNoise(SCREEN_WIDTH, SCREEN_HEIGHT, 50, 50, 4.0f);
-    Texture2D texture = LoadTextureFromImage(perlin); // Check README.md for how this works
 
-    while (!WindowShouldClose())
-    {
-        BeginDrawing();
+int main(void) {
+  InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
+  SetTargetFPS(60);
+  int getFrames = GetFrameTime();
+  perlin noise = {};
+  Texture2D texture = LoadTextureFromImage(noise.perlinGen());
 
-        ClearBackground(RAYWHITE);
+  //camera.target = (Vector2){};
 
-        const int texture_x = SCREEN_WIDTH / 2 - texture.width / 2;
-        const int texture_y = SCREEN_HEIGHT / 2 - texture.height / 2;
-        DrawTexture(texture, texture_x, texture_y, WHITE);
+  while (!WindowShouldClose()) {
+    BeginDrawing();
+    ClearBackground(RAYWHITE);
+    int texture_x = SCREEN_WIDTH / 2 - texture.width / 2;
+    int texture_y = SCREEN_HEIGHT / 2 - texture.height / 2;
 
-        const char* text = "OMG! IT WORKS!";
-        const Vector2 text_size = MeasureTextEx(GetFontDefault(), text, 20, 1);
-        DrawText(text, SCREEN_WIDTH / 2 - text_size.x / 2, texture_y + texture.height + text_size.y + 10, 20, BLACK);
+    DrawTexture(texture, texture_x, texture_y, WHITE);
+    EndDrawing();
+  }
 
-        EndDrawing();
-    }
+  CloseWindow();
 
-    CloseWindow();
-
-    return 0;
+  return 0;
 }
