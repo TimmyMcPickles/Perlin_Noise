@@ -1,5 +1,6 @@
 #include "raylib.h"
-#include "perlin.h"
+#include "raymath.h"
+//#include "perlin.h"
 
 #define SCREEN_WIDTH (800)
 #define SCREEN_HEIGHT (450)
@@ -10,23 +11,23 @@
 int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
   SetTargetFPS(60);
-  int getFrames = GetFrameTime();
   //perlin noise;
 
   Texture2D texture;
   Image image;
 
   //camera.target = (Vector2){};
-  float time = 0.0f;
+  float x = 0.1f * GetRandomValue(0, 255);
+  float y = 0.1f * GetRandomValue(0, 255);
+  float scale = 4.0f;
+  float time = 0;
   while (!WindowShouldClose()) {
-      time += 0.01f;
-
-      for (int y = 0; y < SCREEN_HEIGHT; ++y ){
-          for (int x = 0; x < SCREEN_WIDTH; ++x){
-              image = GenImagePerlinNoise(SCREEN_WIDTH, SCREEN_HEIGHT, x * 0.1f + time, y * 0.1f + time, 4.0f);
-              texture = LoadTextureFromImage(image);
-          }
-      }
+      time += 1.0f;
+      y ++;
+      x++;
+    image = GenImagePerlinNoise(SCREEN_WIDTH, SCREEN_HEIGHT, (x + Lerp(0.0f, 7.0f, 0.314f)) + time, (y + Lerp(0.0f, 3.0f, 0.314f)) + time, scale + Lerp(0.0f, 10.0f, 0.23f));
+    texture = LoadTextureFromImage(image);
+    UnloadImage(image);
 
     BeginDrawing();
     ClearBackground(RAYWHITE);
