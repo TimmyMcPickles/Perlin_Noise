@@ -11,12 +11,23 @@ int main(void) {
   InitWindow(SCREEN_WIDTH, SCREEN_HEIGHT, WINDOW_TITLE);
   SetTargetFPS(60);
   int getFrames = GetFrameTime();
-  perlin noise = {};
-  Texture2D texture = LoadTextureFromImage(noise.perlinGen());
+  //perlin noise;
+
+  Texture2D texture;
+  Image image;
 
   //camera.target = (Vector2){};
-
+  float time = 0.0f;
   while (!WindowShouldClose()) {
+      time += 0.01f;
+
+      for (int y = 0; y < SCREEN_HEIGHT; ++y ){
+          for (int x = 0; x < SCREEN_WIDTH; ++x){
+              image = GenImagePerlinNoise(SCREEN_WIDTH, SCREEN_HEIGHT, x * 0.1f + time, y * 0.1f + time, 4.0f);
+              texture = LoadTextureFromImage(image);
+          }
+      }
+
     BeginDrawing();
     ClearBackground(RAYWHITE);
     int texture_x = SCREEN_WIDTH / 2 - texture.width / 2;
